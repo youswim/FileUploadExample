@@ -1,11 +1,7 @@
 package com.example.file_upload_example;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface BoardRepository extends CrudRepository<BoardPicture, Integer> {
-    BoardPicture save(BoardPicture boardPicture);
-
-    List<BoardPicture> findAllByBoardIdx(Integer boardIdx);
+@Repository
+public class BoardRepository {
 }

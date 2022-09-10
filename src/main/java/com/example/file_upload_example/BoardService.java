@@ -1,28 +1,28 @@
 package com.example.file_upload_example;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
-    private BoardRepository boardRepository;
-
-    private BoardPictureRepository boardPictureRepository;
-
-    private FileHandler fileHandler;
-
-    @Autowired
-    public BoardService(BoardRepository boardRepository, BoardPictureRepository boardPictureRepository) {
-        this.boardRepository = boardRepository;
-        this.boardPictureRepository = boardPictureRepository;
-        this.fileHandler = new FileHandler();
-    }
+    private final BoardRepository boardRepository;
+    private final BoardPictureRepository boardPictureRepository;
+    private final FileHandler fileHandler;
 
     public Board addBoard(
             Board board,
             List<MultipartFile> files
     ) throws Exception {
         // 파일을 저장하고 그 BoardPicture 에 대한 list 를 가지고 있는다
-        List<BoardPicture> list = fileHandler.parseFileInfo(board.getID(), files);
+        List<BoardPicture> list = fileHandler.parseFileInfo(board.getId(), files);
 
         if(list.isEmpty()){
             // TODO : 파일이 없을 땐 어떻게 해야할까.. 고민을 해보아야 할 것

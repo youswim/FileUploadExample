@@ -19,7 +19,7 @@ public class BoardController {
 
     @PostMapping("/board")
     public ResponseEntity<?> createBoard(
-            @Valid @RequestParam("user") String User,
+            @Valid @RequestParam("user") String user,
             @Valid @RequestParam("content") String content,
             @Valid @RequestParam("files") List<MultipartFile> files
     ) throws Exception {
@@ -28,7 +28,7 @@ public class BoardController {
                 .content(content)
                 .build(), files);
 
-        URI uriLocation = new URI("/board/" + board.getID());
+        URI uriLocation = new URI("/board/" + board.getId());
         return ResponseEntity.created(uriLocation).body("{}");
     }
 }

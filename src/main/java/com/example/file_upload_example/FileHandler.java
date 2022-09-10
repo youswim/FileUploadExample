@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class FileHandler {
     public List<BoardPicture> parseFileInfo(
-            Integer boardID,
+            Long boardId,
             List<MultipartFile> multipartFiles
     ) throws Exception {
 
@@ -29,16 +29,6 @@ public class FileHandler {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         String current_date = simpleDateFormat.format(new Date());
 // 반환을 할 파일 리스트
-        List<BoardPicture> fileList = new ArrayList<>();
-
-        // 파일이 빈 것이 들어오면 빈 것을 반환
-        if (multipartFiles.isEmpty()) {
-            return fileList;
-        }
-
-        // 파일 이름을 업로드 한 날짜로 바꾸어서 저장할 것이다
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String current_date = simpleDateFormat.format(new Date());
 
         // 프로젝트 폴더에 저장하기 위해 절대경로를 설정 (Window 의 Tomcat 은 Temp 파일을 이용한다)
         String absolutePath = new File("").getAbsolutePath() + "\\";
@@ -79,7 +69,7 @@ public class FileHandler {
                 String new_file_name = Long.toString(System.nanoTime()) + originalFileExtension;
                 // 생성 후 리스트에 추가
                 BoardPicture boardPicture = BoardPicture.builder()
-                        .boardIdx(boardID)
+                        .boardIdx(boardId)
                         .original_file_name(multipartFile.getOriginalFilename())
                         .stored_file_path(path + "/" + new_file_name)
                         .file_size(multipartFile.getSize())
