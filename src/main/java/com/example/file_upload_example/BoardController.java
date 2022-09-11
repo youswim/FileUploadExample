@@ -1,5 +1,6 @@
 package com.example.file_upload_example;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +14,9 @@ import java.util.List;
 
 //@CrossOrigin
 @RestController
+@RequiredArgsConstructor
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
 
     @PostMapping("/board")
     public ResponseEntity<?> createBoard(
@@ -24,8 +25,8 @@ public class BoardController {
             @Valid @RequestParam("files") List<MultipartFile> files
     ) throws Exception {
         Board board = boardService.addBoard(Board.builder()
-                .user(user)
-                .content(content)
+                .users(user)
+                .contents(content)
                 .build(), files);
 
         URI uriLocation = new URI("/board/" + board.getId());

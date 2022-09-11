@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class FileHandler {
     public List<BoardPicture> parseFileInfo(
-            Long boardId,
+            Board board,
             List<MultipartFile> multipartFiles
     ) throws Exception {
 
@@ -32,8 +32,9 @@ public class FileHandler {
 
         // 프로젝트 폴더에 저장하기 위해 절대경로를 설정 (Window 의 Tomcat 은 Temp 파일을 이용한다)
         String absolutePath = new File("").getAbsolutePath() + "\\";
+        // getAbsolutePath : WorkingDirectory에 pathname을 더한 경로를 반환.
 
-        // 경로를 지정하고 그곳에다가 저장할 심산이다
+        // 이미지가 업로드된 날짜를 이름으로 갖는 디렉토리에 이미지 저장할 예정.
         String path = "images/" + current_date;
         File file = new File(path);
         // 저장할 위치의 디렉토리가 존지하지 않을 경우
@@ -42,7 +43,6 @@ public class FileHandler {
             file.mkdirs();
         }
 
-        // 파일들을 이제 만져볼 것이다
         for (MultipartFile multipartFile : multipartFiles) {
             // 파일이 비어 있지 않을 때 작업을 시작해야 오류가 나지 않는다
             if (!multipartFile.isEmpty()) {
@@ -66,19 +66,23 @@ public class FileHandler {
                     }
                 }
                 // 각 이름은 겹치면 안되므로 나노 초까지 동원하여 지정
-                String new_file_name = Long.toString(System.nanoTime()) + originalFileExtension;
+                String new_file_name = System.nanoTime() + originalFileExtension;
                 // 생성 후 리스트에 추가
+
+                // 저장된 파일로 변경하여 이를 보여주기 위함
+                file = new File(absolutePath + path + "/" + new_file_name);
+                multipartFile.transferTo(file);
+                file.createNewFile();
+                // 파일을 시스템에 저장.
+
                 BoardPicture boardPicture = BoardPicture.builder()
-                        .boardIdx(boardId)
+                        .board(board)
                         .original_file_name(multipartFile.getOriginalFilename())
                         .stored_file_path(path + "/" + new_file_name)
                         .file_size(multipartFile.getSize())
                         .build();
                 fileList.add(boardPicture);
 
-                // 저장된 파일로 변경하여 이를 보여주기 위함
-                file = new File(absolutePath + path + "/" + new_file_name);
-                multipartFile.transferTo(file);
             }
         }
 

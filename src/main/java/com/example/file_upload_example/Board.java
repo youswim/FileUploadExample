@@ -1,31 +1,32 @@
 package com.example.file_upload_example;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
-@Builder
 @Entity
+@Table(name="BOARD_TABLE")
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Board {
 
-//    @Id
+    @Id
+    @GeneratedValue
     private Long id;
 
-    private String user;
+    private String users;
 
-    private String content;
+    private String contents;
 
-    private List<MultipartFile> pictures;
+    private String reportedDate;
 
+    @OneToMany(mappedBy = "board")
+    private List<BoardPicture> pictures;
 
-    public Board() {
-
-    }
 }
