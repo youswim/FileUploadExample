@@ -72,8 +72,7 @@ public class FileHandler {
                 // 저장된 파일로 변경하여 이를 보여주기 위함
                 file = new File(absolutePath + path + "/" + new_file_name);
                 multipartFile.transferTo(file);
-                file.createNewFile();
-                // 파일을 시스템에 저장.
+                // 메모리에 있는 파일을 디스크에 저장
 
                 BoardPicture boardPicture = BoardPicture.builder()
                         .board(board)

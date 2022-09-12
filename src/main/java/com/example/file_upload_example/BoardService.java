@@ -25,6 +25,7 @@ public class BoardService {
         }
 
         else{
+            boardRepository.save(board);
             boardPictureRepository.saveAll(list);
             board.setPictures(list);
         }
